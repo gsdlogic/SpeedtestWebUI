@@ -1,0 +1,11 @@
+﻿@page "/"
+@inject SpeedtestRunner Runner
+
+<div class="text-center">
+  <h1 class="display-4">Welcome</h1>
+  <button class="btn btn-link" @onclick="Run" disabled="@IsRunning">Run Speedtest</button>
+</div>
+
+<pre>
+@Output
+</pre>

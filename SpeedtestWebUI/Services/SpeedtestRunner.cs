@@ -8,11 +8,27 @@ namespace SpeedtestWebUI.Services;
 
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Interacts with the Ookla Speedtest CLI to run a speedtest.
+/// </summary>
 public class SpeedtestRunner
 {
+    /// <summary>
+    /// The web host environment.
+    /// </summary>
     private readonly IWebHostEnvironment environment;
+
+    /// <summary>
+    /// The factory to create a console process.
+    /// </summary>
     private readonly ConsoleProcess.Factory processFactory;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SpeedtestRunner" /> class.
+    /// </summary>
+    /// <param name="environment">The web host environment.</param>
+    /// <param name="processFactory">The factory to create a console process.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public SpeedtestRunner(IWebHostEnvironment environment, ConsoleProcess.Factory processFactory)
     {
         this.environment = environment ?? throw new ArgumentNullException(nameof(environment));
@@ -31,11 +47,10 @@ public class SpeedtestRunner
     /// <returns>The results of the speedtest.</returns>
     public string Run()
     {
-        var path = this.GetExecutablePath();
-
+        var fileName = this.GetExecutablePath();
         var process = this.processFactory.Invoke();
-        process.Run(path, "--accept-license --accept-gdpr --format=json");
-        return process.ReadAsString();
+        process.Run(fileName, "--accept-license --accept-gdpr --format=human-readable");
+        return process.ReadAsString(ConsoleOutputType.StandardOutput);
     }
 
     /// <summary>
