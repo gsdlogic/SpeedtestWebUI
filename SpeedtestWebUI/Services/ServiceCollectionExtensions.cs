@@ -7,6 +7,8 @@
 namespace SpeedtestWebUI.Services;
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using SpeedtestWebUI.Services.Processing;
+using SpeedtestWebUI.Services.Sppeedtest;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IServiceCollection" /> interface.
@@ -43,8 +45,8 @@ public static class ServiceCollectionExtensions
             throw new ArgumentNullException(nameof(services));
         }
 
-        services.TryAddTransient<SpeedtestRunner>();
-        services.TryAddScoped<SpeedtestRunner.Factory>(context => context.GetRequiredService<SpeedtestRunner>);
+        services.TryAddTransient<SpeedTestRunner>();
+        services.TryAddScoped<SpeedTestRunner.Factory>(context => context.GetRequiredService<SpeedTestRunner>);
 
         services.AddConsoleProcess();
 

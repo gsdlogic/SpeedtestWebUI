@@ -1,17 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SpeedtestRunner.cs" company="GSD Logic">
+// <copyright file="SpeedTestRunner.cs" company="GSD Logic">
 //   Copyright © 2024 GSD Logic. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services;
+namespace SpeedtestWebUI.Services.Sppeedtest;
 
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
+using SpeedtestWebUI.Services.Processing;
 
 /// <summary>
 /// Interacts with the Ookla Speedtest CLI to run a speedtest.
 /// </summary>
-public class SpeedtestRunner
+public class SpeedTestRunner
 {
     /// <summary>
     /// The web host environment.
@@ -24,33 +26,34 @@ public class SpeedtestRunner
     private readonly ConsoleProcess.Factory processFactory;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SpeedtestRunner" /> class.
+    /// Initializes a new instance of the <see cref="SpeedTestRunner" /> class.
     /// </summary>
     /// <param name="environment">The web host environment.</param>
     /// <param name="processFactory">The factory to create a console process.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public SpeedtestRunner(IWebHostEnvironment environment, ConsoleProcess.Factory processFactory)
+    public SpeedTestRunner(IWebHostEnvironment environment, ConsoleProcess.Factory processFactory)
     {
         this.environment = environment ?? throw new ArgumentNullException(nameof(environment));
         this.processFactory = processFactory ?? throw new ArgumentNullException(nameof(processFactory));
     }
 
     /// <summary>
-    /// Creates a new instance of the <see cref="SpeedtestRunner" /> class.
+    /// Creates a new instance of the <see cref="SpeedTestRunner" /> class.
     /// </summary>
-    /// <returns>A new instance of the <see cref="SpeedtestRunner" /> class.</returns>
-    public delegate SpeedtestRunner Factory();
+    /// <returns>A new instance of the <see cref="SpeedTestRunner" /> class.</returns>
+    public delegate SpeedTestRunner Factory();
 
     /// <summary>
     /// Runs a speedtest.
     /// </summary>
     /// <returns>The results of the speedtest.</returns>
-    public string Run()
+    public SpeedTestResult Run()
     {
         var fileName = this.GetExecutablePath();
         var process = this.processFactory.Invoke();
-        process.Run(fileName, "--accept-license --accept-gdpr --format=human-readable");
-        return process.ReadAsString(ConsoleOutputType.StandardOutput);
+        process.Run(fileName, "--accept-license --accept-gdpr --format=json");
+        var json = process.ReadAsString(ConsoleOutputType.StandardOutput);
+        return JsonConvert.DeserializeObject<SpeedTestResult>(json);
     }
 
     /// <summary>

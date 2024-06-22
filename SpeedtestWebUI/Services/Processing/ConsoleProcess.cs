@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services;
+namespace SpeedtestWebUI.Services.Processing;
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -35,7 +35,7 @@ public class ConsoleProcess
     {
         var builder = new StringBuilder();
 
-        foreach (var output in this.ReadOutput(outputType))
+        foreach (var output in ReadOutput(outputType))
         {
             builder.AppendLine(output.Data);
         }
@@ -50,7 +50,7 @@ public class ConsoleProcess
     /// <returns>The remaining output from the process.</returns>
     public IEnumerable<ConsoleOutput> ReadOutput(ConsoleOutputType? outputType = null)
     {
-        while (this.outputQueue.TryDequeue(out var output))
+        while (outputQueue.TryDequeue(out var output))
         {
             if (!outputType.HasValue)
             {
@@ -85,10 +85,10 @@ public class ConsoleProcess
             EnableRaisingEvents = true,
         };
 
-        process.OutputDataReceived += this.OutputDataReceived;
-        process.ErrorDataReceived += this.ErrorDataReceived;
+        process.OutputDataReceived += OutputDataReceived;
+        process.ErrorDataReceived += ErrorDataReceived;
 
-        this.outputQueue.Enqueue(new ConsoleOutput($"{fileName} {arguments}", ConsoleOutputType.Message));
+        outputQueue.Enqueue(new ConsoleOutput($"{fileName} {arguments}", ConsoleOutputType.Message));
 
         try
         {
@@ -98,11 +98,11 @@ public class ConsoleProcess
         }
         catch (Exception ex)
         {
-            this.outputQueue.Enqueue(new ConsoleOutput(ex.ToString(), ConsoleOutputType.Message));
+            outputQueue.Enqueue(new ConsoleOutput(ex.ToString(), ConsoleOutputType.Message));
         }
 
         process.WaitForExit();
-        this.outputQueue.Enqueue(new ConsoleOutput($"{fileName} exited with code {process.ExitCode}.", ConsoleOutputType.Message));
+        outputQueue.Enqueue(new ConsoleOutput($"{fileName} exited with code {process.ExitCode}.", ConsoleOutputType.Message));
     }
 
     /// <summary>
@@ -114,7 +114,7 @@ public class ConsoleProcess
     {
         if (!string.IsNullOrEmpty(e.Data))
         {
-            this.outputQueue.Enqueue(new ConsoleOutput(e.Data, ConsoleOutputType.StandardError));
+            outputQueue.Enqueue(new ConsoleOutput(e.Data, ConsoleOutputType.StandardError));
         }
     }
 
@@ -127,7 +127,7 @@ public class ConsoleProcess
     {
         if (!string.IsNullOrEmpty(e.Data))
         {
-            this.outputQueue.Enqueue(new ConsoleOutput(e.Data, ConsoleOutputType.StandardOutput));
+            outputQueue.Enqueue(new ConsoleOutput(e.Data, ConsoleOutputType.StandardOutput));
         }
     }
 }

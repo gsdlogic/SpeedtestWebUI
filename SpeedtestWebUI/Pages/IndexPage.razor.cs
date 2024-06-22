@@ -6,6 +6,8 @@
 
 namespace SpeedtestWebUI.Pages;
 
+using System.Text;
+
 /// <summary>
 /// Provides a model for the <c>IndexPage.razor</c> page.
 /// </summary>
@@ -31,11 +33,19 @@ public partial class IndexPage
 
         await Task.Run(async () =>
         {
-            var output = this.Runner.Run();
+            var result = this.Runner.Run();
 
             await this.InvokeAsync(() =>
             {
-                this.Output = output;
+                var builder = new StringBuilder();
+                builder.AppendLine($"      Server: {result.Server.Name} - {result.Server.Location}");
+                builder.AppendLine($"         ISP: {result.Isp}");
+                builder.AppendLine($"    Download: {result.Download.Bandwidth / 125000,8:f2} Mbps");
+                builder.AppendLine($"      Upload: {result.Upload.Bandwidth / 125000,8:f2} Mbps");
+                builder.AppendLine($"Idle Latency: {result.Ping.Latency,8:f2}");
+                builder.AppendLine($" Packet Loss: {result.PacketLoss,7:f1}%");
+
+                this.Output = builder.ToString();
                 this.IsRunning = false;
                 this.StateHasChanged();
             });

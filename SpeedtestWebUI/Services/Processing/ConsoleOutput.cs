@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services;
+namespace SpeedtestWebUI.Services.Processing;
 
 /// <summary>
 /// Provides output from the <see cref="ConsoleProcess" /> class.

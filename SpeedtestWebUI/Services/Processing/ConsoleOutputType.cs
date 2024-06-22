@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services;
+namespace SpeedtestWebUI.Services.Processing;
 
 using System.Diagnostics;
 
