@@ -1,11 +1,37 @@
 ﻿@page "/"
-@inject SpeedTestRunner Runner
+@inject SpeedTestTracker Tracker
 
 <div class="text-center">
-  <h1 class="display-4">Welcome</h1>
   <button class="btn btn-link" @onclick="Run" disabled="@IsRunning">Run Speedtest</button>
 </div>
 
 <pre>
 @Output
 </pre>
+
+@if (Results != null)
+{
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Timestamp</th>
+      <th scope="col" class="text-end">Download</th>
+      <th scope="col" class="text-end">Upload</th>
+      <th scope="col" class="text-end">Latency</th>
+      <th scope="col" class="text-end">PacketLoss</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var result in Results)
+    {
+      <tr>
+        <th scope="row">@result.Timestamp</th>
+        <td class="text-end">@($"{result.Download.Bandwidth / 125000:f2} Mbps")</td>
+        <td class="text-end">@($"{result.Upload.Bandwidth / 125000:f2} Mbps")</td>
+        <td class="text-end">@($"{result.Ping.Latency:f2} ms")</td>
+        <td class="text-end">@($"{result.PacketLoss:f1}%")</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+}

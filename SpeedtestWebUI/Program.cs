@@ -16,7 +16,7 @@ public class Program
 
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
-        builder.Services.AddSpeedtestRunner();
+        builder.Services.AddSpeedtestTracker();
 
         builder.Services.AddHsts(options =>
         {

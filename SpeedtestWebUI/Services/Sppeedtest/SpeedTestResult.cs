@@ -6,6 +6,8 @@
 
 namespace SpeedtestWebUI.Services.Sppeedtest;
 
+using Newtonsoft.Json;
+
 /// <summary>
 /// Represents the root object of the JSON.
 /// </summary>
@@ -60,4 +62,14 @@ public class SpeedTestResult
     /// Gets or sets the upload speed information.
     /// </summary>
     public SpeedInfo Upload { get; set; }
+
+    /// <summary>
+    /// Parses a speedtest result.
+    /// </summary>
+    /// <param name="json">A string containing the JSON result of the speedtest.</param>
+    /// <returns>A <see cref="SpeedTestResult" /> containing the parsed result.</returns>
+    public static SpeedTestResult Parse(string json)
+    {
+        return JsonConvert.DeserializeObject<SpeedTestResult>(json);
+    }
 }

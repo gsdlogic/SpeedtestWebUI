@@ -7,7 +7,6 @@
 namespace SpeedtestWebUI.Services.Sppeedtest;
 
 using System.Runtime.InteropServices;
-using Newtonsoft.Json;
 using SpeedtestWebUI.Services.Processing;
 
 /// <summary>
@@ -46,14 +45,13 @@ public class SpeedTestRunner
     /// <summary>
     /// Runs a speedtest.
     /// </summary>
-    /// <returns>The results of the speedtest.</returns>
-    public SpeedTestResult Run()
+    /// <returns>The result of the speedtest.</returns>
+    public string Run()
     {
         var fileName = this.GetExecutablePath();
         var process = this.processFactory.Invoke();
         process.Run(fileName, "--accept-license --accept-gdpr --format=json");
-        var json = process.ReadAsString(ConsoleOutputType.StandardOutput);
-        return JsonConvert.DeserializeObject<SpeedTestResult>(json);
+        return process.ReadAsString(ConsoleOutputType.StandardOutput);
     }
 
     /// <summary>

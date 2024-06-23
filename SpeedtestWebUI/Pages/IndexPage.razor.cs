@@ -7,6 +7,7 @@
 namespace SpeedtestWebUI.Pages;
 
 using System.Text;
+using SpeedtestWebUI.Services.Sppeedtest;
 
 /// <summary>
 /// Provides a model for the <c>IndexPage.razor</c> page.
@@ -24,6 +25,35 @@ public partial class IndexPage
     public string Output { get; set; }
 
     /// <summary>
+    /// The results of the speedtest runs.
+    /// </summary>
+    private List<SpeedTestResult> Results { get; set; }
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Task.Run(async () =>
+        {
+            var results = this.Tracker.GetResults();
+
+            await this.InvokeAsync(() =>
+            {
+                this.Results = results
+                    .Reverse()
+                    .ToList();
+            });
+        });
+    }
+
+    /// <summary>
     /// Runs a speedtest.
     /// </summary>
     private async void Run()
@@ -33,7 +63,8 @@ public partial class IndexPage
 
         await Task.Run(async () =>
         {
-            var result = this.Runner.Run();
+            var result = this.Tracker.Run();
+            var results = this.Tracker.GetResults();
 
             await this.InvokeAsync(() =>
             {
@@ -42,11 +73,17 @@ public partial class IndexPage
                 builder.AppendLine($"         ISP: {result.Isp}");
                 builder.AppendLine($"    Download: {result.Download.Bandwidth / 125000,8:f2} Mbps");
                 builder.AppendLine($"      Upload: {result.Upload.Bandwidth / 125000,8:f2} Mbps");
-                builder.AppendLine($"Idle Latency: {result.Ping.Latency,8:f2}");
+                builder.AppendLine($"Idle Latency: {result.Ping.Latency,8:f2} ms");
                 builder.AppendLine($" Packet Loss: {result.PacketLoss,7:f1}%");
 
                 this.Output = builder.ToString();
+
+                this.Results = results
+                    .Reverse()
+                    .ToList();
+
                 this.IsRunning = false;
+
                 this.StateHasChanged();
             });
         });
