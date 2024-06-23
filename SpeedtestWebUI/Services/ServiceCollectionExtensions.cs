@@ -28,35 +28,17 @@ public static class ServiceCollectionExtensions
         }
 
         services.TryAddTransient<ConsoleProcess>();
-        services.TryAddScoped<ConsoleProcess.Factory>(context => context.GetRequiredService<ConsoleProcess>);
+        services.TryAddSingleton<ConsoleProcess.Factory>(context => context.GetRequiredService<ConsoleProcess>);
 
         return services;
     }
-    
+
     /// <summary>
     /// Adds the speedtest tracker to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <returns>The service collection so that additional calls may be chained.</returns>
-    public static IServiceCollection AddSpeedtestTracker(this IServiceCollection services)
-    {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
-
-        services.AddSpeedtestRunner();
-        services.TryAddScoped<SpeedTestTracker>();
-
-        return services;
-    }
-
-    /// <summary>
-    /// Adds the speedtest runner to the service collection.
-    /// </summary>
-    /// <param name="services">The service collection.</param>
-    /// <returns>The service collection so that additional calls may be chained.</returns>
-    public static IServiceCollection AddSpeedtestRunner(this IServiceCollection services)
+    public static IServiceCollection AddSpeedTest(this IServiceCollection services)
     {
         if (services == null)
         {
@@ -64,8 +46,12 @@ public static class ServiceCollectionExtensions
         }
 
         services.AddConsoleProcess();
+
         services.TryAddTransient<SpeedTestRunner>();
-        services.TryAddScoped<SpeedTestRunner.Factory>(context => context.GetRequiredService<SpeedTestRunner>);
+        services.TryAddSingleton<SpeedTestRunner.Factory>(context => context.GetRequiredService<SpeedTestRunner>);
+        services.TryAddSingleton<SpeedTestTracker>();
+
+        services.AddHostedService<SpeedTestScheduler>();
 
         return services;
     }

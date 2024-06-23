@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpeedTestTracker.cs" company="GSD Logic">
 //   Copyright © 2024 GSD Logic. All Rights Reserved.
 // </copyright>
@@ -16,9 +16,9 @@ public class SpeedTestTracker
     /// <summary>
     /// The path to store the speedtest results.
     /// </summary>
-    private static readonly string FilePath = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+    public static readonly string FilePath = Path.GetFullPath(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GSD Logic", "SpeedTest", "results.txt") :
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "gsd", "sppeedtest", "results.txt");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "gsd", "speedtest", "results.txt"));
 
     /// <summary>
     /// The factory for creating a speedtest runner.

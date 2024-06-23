@@ -1,0 +1,19 @@
+root = true
+
+[*]
+tab_width = 4
+indent_size = 4
+indent_style = space
+end_of_line = crlf
+charset = utf-8
+
+[*.{cshtml,csproj,html,json,razor,wixproj,wxl,wxs,xaml,xml,yaml}]
+tab_width = 2
+indent_size = 2
+
+[*.cs]
+csharp_style_prefer_primary_constructors = false
+dotnet_style_prefer_collection_expression = false
+
+[*.cshtml.cs]
+dotnet_diagnostic.SA1649.severity = none
