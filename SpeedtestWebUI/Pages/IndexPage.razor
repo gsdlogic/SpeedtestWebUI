@@ -1,13 +1,14 @@
-﻿@page "/"
+@page "/"
 @inject SpeedTestTracker Tracker
 
 <div class="text-center">
   <button class="btn btn-link" @onclick="Run" disabled="@IsRunning">Run Speedtest</button>
 </div>
 
-<pre>
-@Output
-</pre>
+@if (Output != null)
+{
+  <pre>@Output</pre>
+}
 
 @if (Results != null)
 {
