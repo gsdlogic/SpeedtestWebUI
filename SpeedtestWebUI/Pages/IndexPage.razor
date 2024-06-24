@@ -25,18 +25,24 @@
     <tbody>
     @foreach (var result in Results)
     {
-      <tr>
-        <th scope="row">@result.Timestamp</th>
-        <td class="text-end">@($"{result.Download.Bandwidth / 125000:f2} Mbps")</td>
-        <td class="text-end">@($"{result.Upload.Bandwidth / 125000:f2} Mbps")</td>
-        <td class="text-end">@($"{result.Ping.Latency:f2} ms")</td>
-        <td class="text-end">@($"{result.PacketLoss:f1}%")</td>
-      </tr>
+      @if (result.Error == null)
+      {
+        <tr>
+          <th scope="row">@result.Timestamp</th>
+          <td class="text-end">@($"{result.Download.Bandwidth / 125000:f2} Mbps")</td>
+          <td class="text-end">@($"{result.Upload.Bandwidth / 125000:f2} Mbps")</td>
+          <td class="text-end">@($"{result.Ping.Latency:f2} ms")</td>
+          <td class="text-end">@($"{result.PacketLoss:f1}%")</td>
+        </tr>
+      }
+      else
+      {
+        <tr>
+          <th scope="row">@result.Timestamp</th>
+          <td colspan="4" class="text-center text-danger">@result.Error</td>
+        </tr>
+      }
     }
     </tbody>
   </table>
 }
-
-<div class="text-secondary">
-  <small>@SpeedTestTracker.FilePath</small>
-</div>

@@ -1,10 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpeedTestResult.cs" company="GSD Logic">
 //   Copyright © 2024 GSD Logic. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services.Sppeedtest;
+namespace SpeedtestWebUI.Services.SpeedTest;
 
 using Newtonsoft.Json;
 
@@ -17,6 +17,11 @@ public class SpeedTestResult
     /// Gets or sets the download speed information.
     /// </summary>
     public SpeedInfo Download { get; set; }
+
+    /// <summary>
+    /// Gets or sets the error message.
+    /// </summary>
+    public string Error { get; set; }
 
     /// <summary>
     /// Gets or sets the interface details.

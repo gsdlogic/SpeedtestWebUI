@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services.Sppeedtest;
+namespace SpeedtestWebUI.Services.SpeedTest;
 
 /// <summary>
 /// Provides extension methods for the <see cref="ILogger" /> interface.

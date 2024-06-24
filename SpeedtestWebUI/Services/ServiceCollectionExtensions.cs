@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ServiceCollectionExtensions.cs" company="GSD Logic">
 //   Copyright © 2024 GSD Logic. All Rights Reserved.
 // </copyright>
@@ -8,7 +8,7 @@ namespace SpeedtestWebUI.Services;
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SpeedtestWebUI.Services.Processing;
-using SpeedtestWebUI.Services.Sppeedtest;
+using SpeedtestWebUI.Services.SpeedTest;
 
 /// <summary>
 /// Provides extension methods for the <see cref="IServiceCollection" /> interface.

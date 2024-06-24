@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IndexPage.razor.cs" company="GSD Logic">
 //   Copyright © 2024 GSD Logic. All Rights Reserved.
 // </copyright>
@@ -7,7 +7,7 @@
 namespace SpeedtestWebUI.Pages;
 
 using System.Text;
-using SpeedtestWebUI.Services.Sppeedtest;
+using SpeedtestWebUI.Services.SpeedTest;
 
 /// <summary>
 /// Provides a model for the <c>IndexPage.razor</c> page.
@@ -69,12 +69,20 @@ public partial class IndexPage
             await this.InvokeAsync(() =>
             {
                 var builder = new StringBuilder();
-                builder.AppendLine($"      Server: {result.Server.Name} - {result.Server.Location}");
-                builder.AppendLine($"         ISP: {result.Isp}");
-                builder.AppendLine($"    Download: {result.Download.Bandwidth / 125000,8:f2} Mbps");
-                builder.AppendLine($"      Upload: {result.Upload.Bandwidth / 125000,8:f2} Mbps");
-                builder.AppendLine($"Idle Latency: {result.Ping.Latency,8:f2} ms");
-                builder.AppendLine($" Packet Loss: {result.PacketLoss,7:f1}%");
+
+                if (result.Error == null)
+                {
+                    builder.AppendLine($"      Server: {result.Server.Name} - {result.Server.Location}");
+                    builder.AppendLine((string)$"         ISP: {result.Isp}");
+                    builder.AppendLine((string)$"    Download: {result.Download.Bandwidth / 125000,8:f2} Mbps");
+                    builder.AppendLine((string)$"      Upload: {result.Upload.Bandwidth / 125000,8:f2} Mbps");
+                    builder.AppendLine((string)$"Idle Latency: {result.Ping.Latency,8:f2} ms");
+                    builder.AppendLine((string)$" Packet Loss: {result.PacketLoss,7:f1}%");
+                }
+                else
+                {
+                    builder.AppendLine(result.Error);
+                }
 
                 this.Output = builder.ToString();
 

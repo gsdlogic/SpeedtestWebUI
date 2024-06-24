@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SpeedtestWebUI.Services.Sppeedtest;
+namespace SpeedtestWebUI.Services.SpeedTest;
 
 using System.Runtime.InteropServices;
 
@@ -80,6 +80,13 @@ public class SpeedTestTracker
         using var streamWriter = new StreamWriter(FilePath, true);
         streamWriter.WriteLine(json);
 
-        return SpeedTestResult.Parse(json);
+        var result = SpeedTestResult.Parse(json);
+
+        if (result.Timestamp == DateTime.MinValue)
+        {
+            result.Timestamp = DateTime.UtcNow;
+        }
+
+        return result;
     }
 }
